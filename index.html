@@ -5,75 +5,92 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MuseAI (AutoMuse) | Quest, Mint & Hold</title>
 <meta name="description" content="MuseAI (AutoMuse) — complete the community quest, then mint from two lanes on BNB Smart Chain: a 500-share Agent lane for Binance Agent ID holders and a 500-share Public lane open to every wallet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0e1a; --panel:#12172b; --panel2:#171e36; --line:#263056;
-    --text:#eef1ff; --muted:#9aa5cc; --accent:#6c8cff; --accent2:#37d99a;
-    --warn:#ffb84d; --err:#ff7a7a; --radius:14px;
+    --bg:#08080d; --bg2:#0d0d15; --panel:rgba(255,255,255,.025); --panel2:rgba(255,255,255,.045);
+    --line:rgba(200,161,90,.22); --line-soft:rgba(255,255,255,.08);
+    --text:#f2efe9; --muted:#a9a49b; --gold:#c8a15a; --gold-soft:#e3c98f; --green:#7fc98f;
+    --warn:#e0b34d; --err:#e07a7a; --radius:10px;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55}
-  a{color:var(--accent)}
-  .wrap{max-width:880px;margin:0 auto;padding:20px 16px 64px}
-  header.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:14px 0 6px}
-  .brand{font-weight:800;font-size:20px;letter-spacing:.2px}
-  .brand span{color:var(--accent)}
-  .net{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0}
-  .panel h2{margin:0 0 8px;font-size:20px}
-  .panel h3{margin:0 0 6px;font-size:16px}
+  html{scroll-behavior:smooth}
+  body{margin:0;color:var(--text);font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.65;
+    background:
+      radial-gradient(900px 480px at 50% -120px, rgba(200,161,90,.10), transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+    background-attachment:fixed}
+  a{color:var(--gold-soft);text-decoration:none;border-bottom:1px solid rgba(200,161,90,.35)}
+  a:hover{border-bottom-color:var(--gold)}
+  .wrap{max-width:860px;margin:0 auto;padding:28px 20px 72px}
+  header.top{text-align:center;padding:26px 0 8px}
+  .brand{font-family:"Playfair Display",Georgia,serif;font-size:30px;font-weight:600;letter-spacing:.01em}
+  .brand em{color:var(--gold);font-style:italic}
+  .net{margin-top:8px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .rule{width:64px;height:1px;background:var(--gold);margin:18px auto 0;opacity:.8}
+  .panel{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:30px 30px 26px;margin:22px 0;backdrop-filter:blur(2px)}
+  @media(max-width:640px){.panel{padding:22px 18px}}
+  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+  .panel h2{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:27px;line-height:1.25;margin:0 0 12px}
+  .panel h3{font-size:16px;margin:0 0 6px}
   .muted{color:var(--muted)}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
-  .chip{font-size:13px;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:5px 11px}
-  .chip b{color:var(--accent2)}
-  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;word-break:break-all}
-  .lanes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 6px}
+  .chip{font-size:12.5px;letter-spacing:.02em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--text);background:rgba(200,161,90,.05)}
+  .chip b{color:var(--gold);font-weight:600}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;word-break:break-all;color:var(--gold-soft)}
+  .lanes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
   @media(max-width:640px){.lanes{grid-template-columns:1fr}}
-  .lane{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
-  .lane .tag{font-size:11px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
-  .lane .big{font-size:22px;font-weight:800;margin:4px 0}
-  .bar{height:8px;background:#0a0d1c;border-radius:99px;overflow:hidden;margin-top:8px}
-  .bar i{display:block;height:100%;background:var(--accent);width:0%}
-  .bar.green i{background:var(--accent2)}
-  .task{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line)}
+  .lane{background:var(--panel2);border:1px solid var(--line-soft);border-radius:var(--radius);padding:20px}
+  .lane .tag{font-size:10.5px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+  .lane .big{font-family:"Playfair Display",Georgia,serif;font-size:30px;font-weight:600;margin:6px 0 4px}
+  .bar{height:3px;background:rgba(255,255,255,.09);border-radius:99px;overflow:hidden;margin-top:14px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));width:0%}
+  .task{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line-soft)}
   .task:last-of-type{border-bottom:none}
-  .task input[type=checkbox]{width:19px;height:19px;margin-top:3px;accent-color:var(--accent2)}
-  .task .pts{margin-left:auto;font-size:12px;color:var(--accent2);white-space:nowrap}
-  .task .go{font-size:12px}
-  input[type=text]{width:100%;background:#0a0d1c;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px 12px;font-size:14px}
-  .score{margin-top:12px;font-size:14px}
-  .score b{color:var(--accent2)}
-  button{cursor:pointer;border:none;border-radius:10px;padding:12px 18px;font-size:15px;font-weight:700;background:var(--accent);color:#fff}
-  button:disabled{opacity:.45;cursor:not-allowed}
-  button.ghost{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:600}
+  .task input[type=checkbox]{width:18px;height:18px;margin-top:4px;accent-color:var(--gold)}
+  .task .pts{margin-left:auto;font-size:12px;color:var(--gold-soft);white-space:nowrap;letter-spacing:.04em}
+  .task .go{font-size:12.5px}
+  input[type=text]{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line-soft);border-radius:8px;color:var(--text);padding:11px 13px;font-size:14px;font-family:inherit}
+  input[type=text]:focus{outline:none;border-color:var(--gold)}
+  .score{margin-top:14px;font-size:14px}
+  .score b{color:var(--gold-soft)}
+  button{cursor:pointer;border:none;border-radius:8px;padding:12px 22px;font-size:14.5px;font-weight:600;letter-spacing:.02em;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#171207;transition:filter .15s}
+  button:hover{filter:brightness(1.06)}
+  button:disabled{opacity:.4;cursor:not-allowed;filter:none}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:500}
   .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-  .stepper{display:flex;align-items:center;gap:8px}
-  .stepper button{width:40px;height:40px;padding:0;font-size:19px}
-  .stepper .n{min-width:44px;text-align:center;font-size:18px;font-weight:800}
-  .lanepick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+  .stepper{display:flex;align-items:center;gap:10px}
+  .stepper button{width:40px;height:40px;padding:0;font-size:19px;background:transparent;border:1px solid var(--line);color:var(--text)}
+  .stepper .n{min-width:44px;text-align:center;font-size:19px;font-weight:700;font-family:"Playfair Display",Georgia,serif}
+  .lanepick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
   @media(max-width:640px){.lanepick{grid-template-columns:1fr}}
-  .pick{border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:12px;text-align:left;color:var(--text);font-weight:600}
+  .pick{border:1px solid var(--line-soft);background:var(--panel2);border-radius:var(--radius);padding:15px;text-align:left;color:var(--text);font-weight:600}
   .pick small{display:block;color:var(--muted);font-weight:400;margin-top:3px}
-  .pick.sel{border-color:var(--accent);outline:2px solid rgba(108,140,255,.35)}
-  .status{font-size:13px;margin-top:10px;min-height:18px}
-  .status.err{color:var(--err)} .status.ok{color:var(--accent2)} .status.warn{color:var(--warn)}
-  .kv{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .pick.sel{border-color:var(--gold);outline:1px solid rgba(200,161,90,.4)}
+  .status{font-size:13.5px;margin-top:12px;min-height:18px;color:var(--muted)}
+  .status.err{color:var(--err)} .status.ok{color:var(--green)} .status.warn{color:var(--warn)}
+  .kv{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
   .kv:last-child{border-bottom:none}
-  .kv b{font-weight:700}
-  footer{color:var(--muted);font-size:13px;margin-top:26px}
-  .count{font-variant-numeric:tabular-nums;color:var(--accent2);font-weight:700}
+  .kv b{font-weight:600}
+  footer{color:var(--muted);font-size:13px;margin-top:34px;text-align:center}
+  footer .rule{margin:0 auto 16px}
+  .count{font-variant-numeric:tabular-nums;color:var(--gold-soft);font-weight:600}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header class="top">
-    <div class="brand">MuseAI <span>(AutoMuse)</span> · Quest, Mint &amp; Hold</div>
-    <div class="net">Network: BNB Smart Chain</div>
+    <div class="brand">MuseAI <em>(AutoMuse)</em></div>
+    <div class="net">Quest · Mint · Hold — BNB Smart Chain</div>
+    <div class="rule"></div>
   </header>
 
   <section class="panel">
-    <h2>MuseAI Early Access — Quest &amp; Mint</h2>
+    <p class="kicker">Early Access</p>
+    <h2>An AI project, minted with restraint.</h2>
     <p><strong>MuseAI (AutoMuse)</strong> is a project about the development of AI — from models to autonomous agents — with a fixed-supply token on BNB Smart Chain. Complete the community quest below, then mint from one of two lanes. The whole mint is capped at <strong>1,000 shares</strong> (500 Agent + 500 Public), <strong>1 share = 1,000,000 AutoMuse</strong>, and the mint <strong>closes 30 November 2026</strong>.</p>
     <div class="chips">
       <div class="chip"><b>✓</b> Source verified on Sourcify (exact match)</div>
@@ -85,28 +102,29 @@
     <p class="muted">Mint status: <span id="mintState">reading…</span> · Closes in <span class="count" id="countdown">…</span></p>
     <div class="lanes">
       <div class="lane">
-        <div class="tag">Lane 1 · Agent</div>
+        <div class="tag">Lane I · Agent</div>
         <div class="big">500 shares</div>
         <div class="muted">Reserved for Binance Agent ID holders — the contract checks your Agent ID on-chain.</div>
-        <div class="bar green"><i id="barAgent"></i></div>
-        <div class="muted" id="laneAgentText">Minted — / 500</div>
+        <div class="bar"><i id="barAgent"></i></div>
+        <div class="muted" id="laneAgentText" style="margin-top:8px">Minted — / 500</div>
       </div>
       <div class="lane">
-        <div class="tag">Lane 2 · Public</div>
+        <div class="tag">Lane II · Public</div>
         <div class="big">500 shares</div>
         <div class="muted">Open to every wallet. No Agent ID, no whitelist, no quest requirement.</div>
         <div class="bar"><i id="barPublic"></i></div>
-        <div class="muted" id="lanePublicText">Minted — / 500</div>
+        <div class="muted" id="lanePublicText" style="margin-top:8px">Minted — / 500</div>
       </div>
     </div>
   </section>
 
   <section class="panel" id="quest">
-    <h2>Community Quest</h2>
-    <p class="muted">Four small tasks, 10 points each. The quest is community fun and a way to follow the project — it does <strong>not</strong> gate the mint. The Public lane is open to everyone, quest or not; the Agent lane needs a Binance Agent ID, checked by the contract itself.</p>
-    <label class="muted" for="xuser" style="display:block;margin:10px 0 6px">X / Twitter username (optional)</label>
+    <p class="kicker">Community Quest</p>
+    <h2>Four small tasks, forty points.</h2>
+    <p class="muted">The quest is community fun and a way to follow the project — it does <strong>not</strong> gate the mint. The Public lane is open to everyone, quest or not; the Agent lane needs a Binance Agent ID, checked by the contract itself.</p>
+    <label class="muted" for="xuser" style="display:block;margin:14px 0 6px;font-size:13px;letter-spacing:.06em">X / TWITTER USERNAME (OPTIONAL)</label>
     <input type="text" id="xuser" placeholder="@yourhandle" autocomplete="off">
-    <div style="margin-top:8px">
+    <div style="margin-top:10px">
       <div class="task">
         <input type="checkbox" id="q1">
         <div><label for="q1"><strong>Follow the project on GitHub</strong></label><br>
@@ -137,10 +155,11 @@
   </section>
 
   <section class="panel" id="mint">
+    <p class="kicker">The Mint</p>
     <h2>Mint MuseAI</h2>
     <p class="muted">Pick your lane, pick how many shares, and confirm in your wallet. The page re-reads the live price from the contract right before sending — you always pay exactly <span class="mono">shares × pricePerShare()</span>, plus network gas. Any other amount reverts, so the contract cannot overcharge you.</p>
 
-    <div class="row" style="margin:12px 0">
+    <div class="row" style="margin:16px 0 4px">
       <button id="connectBtn">Connect wallet</button>
       <button class="ghost" id="mmBtn" type="button">Open in MetaMask</button>
       <button class="ghost" id="twBtn" type="button">Open in Trust Wallet</button>
@@ -161,7 +180,7 @@
       <div class="muted">shares (max 15 per wallet)</div>
     </div>
 
-    <div style="margin-top:12px">
+    <div style="margin-top:14px">
       <div class="kv"><span>Price per share (live)</span><b id="kvPrice">…</b></div>
       <div class="kv"><span>You receive</span><b id="kvReceive">…</b></div>
       <div class="kv"><span>Total to pay (exact)</span><b id="kvTotal">…</b></div>
@@ -169,7 +188,7 @@
       <div class="kv"><span>Lane remaining</span><b id="kvRemaining">…</b></div>
     </div>
 
-    <div class="row" style="margin-top:14px">
+    <div class="row" style="margin-top:18px">
       <button id="mintBtn" disabled>Mint</button>
       <a class="muted" style="font-size:13px" href="https://bscscan.com/address/0x4f468aff03ce7de1b6512ab044f338f92689ce2e#writeContract" target="_blank" rel="noopener">Or mint directly on BscScan (Write Contract)</a>
     </div>
@@ -177,6 +196,7 @@
   </section>
 
   <section class="panel">
+    <p class="kicker">After the Mint</p>
     <h2>Hold &amp; Trading</h2>
     <p class="muted">AutoMuse transfers stay locked while the mint runs. They unlock after the PancakeSwap pool is created and the owner opens trading — the same rule for every holder, including the earliest minters. There is no staking program and no reward promise: what you hold is a fixed-supply token whose entire supply rule is written in one verified contract.</p>
     <div class="kv"><span>Your AutoMuse balance</span><b id="kvBalance">Connect a wallet to read</b></div>
@@ -184,11 +204,11 @@
   </section>
 
   <footer>
+    <div class="rule"></div>
     <p>MuseAI (AutoMuse) · <a href="https://automuseai.github.io/">Main mint site</a> · <a href="https://github.com/automuseai" target="_blank" rel="noopener">GitHub</a> · <a href="https://bscscan.com/token/0x4f468aff03ce7de1b6512ab044f338f92689ce2e" target="_blank" rel="noopener">BscScan</a></p>
     <p>No price promises — DYOR. This page never asks for a seed phrase or private key; anyone who does is not us.</p>
   </footer>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
 <script>
 (function(){
